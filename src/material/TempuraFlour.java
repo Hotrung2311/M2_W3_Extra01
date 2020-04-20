@@ -37,8 +37,10 @@ public class TempuraFlour extends Material {
     }
 
     @Override
-    public void discount(double a) {
+    public double discount(double a) {
         Calendar currentDate = Calendar.getInstance();
+
+        return 0;
 
     }
 //    @Override

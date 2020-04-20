@@ -47,8 +47,8 @@ public class Meat extends Material {
     }
 
     @Override
-    public void discount(double a) {
-
+    public double discount(double a) {
+        return 0;
     }
 }
 
