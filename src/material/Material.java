@@ -2,6 +2,7 @@ package material;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class Material implements Discount{
@@ -59,7 +60,16 @@ public abstract class Material implements Discount{
 
     public abstract double abs();
 
-    //public abstract String abstrc(String abs);
-
     public abstract String abstrc() throws ParseException;
+
+//    @Override
+    public double discount(double percent) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date1 = new Date();
+        Date date2 = dateFormat.parse(abstrc());
+        Calendar d1 = Calendar.getInstance();
+        Calendar d2 = Calendar.getInstance();
+        d2.setTime(date2);
+        return abs()*(1-percent/100);
+    }
 }

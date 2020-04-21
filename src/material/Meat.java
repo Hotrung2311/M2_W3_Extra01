@@ -3,21 +3,22 @@ package material;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Meat extends Material {
-    private int unit;
+    private String unit;
     private double weight;
-    public Meat(int id, String name, String mdf, int cost, int unit, double weight){
+    public Meat(int id, String name, String mdf, int cost, String unit, double weight){
         super(id, name, mdf, cost);
         this.unit = unit;
         this.weight = weight;
     }
 
-    public int getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(int unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
@@ -31,7 +32,7 @@ public class Meat extends Material {
 
     @Override
     public double abs() {
-        return getCost()*getUnit()*getWeight();
+        return getCost()*getWeight();
     }
 
     @Override
@@ -42,25 +43,27 @@ public class Meat extends Material {
         exp.setTime(dateFormat.parse(getMfd()));
         exp.add(Calendar.DATE,15);
 
-        setMfd(dateFormat.format(exp.getTime()));
-        return this.getMfd();
+        return dateFormat.format(exp.getTime());
     }
-
     @Override
-    public double discount(double a) {
-        return 0;
+    public double discount() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date1 = new Date();
+        Date date2 = dateFormat.parse(abstrc());
+        Calendar today = Calendar.getInstance();
+        Calendar exp = Calendar.getInstance();
+        exp.setTime(date2);
+        boolean LESS_THAN_THREE_DAYS = exp.get(Calendar.DATE) - today.get(Calendar.DATE) <= 3;
+        boolean LESS_THAN_FIVE_DAYS = exp.get(Calendar.DATE) - today.get(Calendar.DATE) <= 5;
+        boolean IS_SAME_MONTH = today.get(Calendar.MONTH) == exp.get(Calendar.MONTH);
+        boolean IS_SAME_YEAR = today.get(Calendar.YEAR) == exp.get(Calendar.YEAR);
+        if (LESS_THAN_FIVE_DAYS && IS_SAME_MONTH && IS_SAME_YEAR){
+            if(LESS_THAN_THREE_DAYS && IS_SAME_MONTH && IS_SAME_YEAR) {
+                return abs()*0.5;
+            }
+            return abs()*0.3;
+        } else
+            return abs()*0.1;
     }
 }
 
-class TestMeat{
-    public static void main(String[] args) throws ParseException {
-        Meat m1 = new Meat(1, "m1","20/4/2020", 20000, 5, 5);
-        Meat m2 = new Meat(2, "m2","20/4/2020", 25000, 3, 3);
-        Meat m3 = new Meat(3, "m3","20/4/2020", 30000, 6, 7);
-        Meat m4 = new Meat(4, "m4","20/4/2020", 16000, 4, 20);
-        Meat m5 = new Meat(5, "m5","20/4/2020", 22000, 8, 10);
-
-        System.out.println(m1.getMfd());
-        System.out.println(m1.abstrc());
-    }
-}

@@ -1,5 +1,7 @@
 package material;
 
+import java.text.ParseException;
+
 public interface Discount {
-    double discount (double a);
+    double discount () throws ParseException;
 }
